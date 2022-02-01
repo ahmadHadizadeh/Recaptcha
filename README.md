@@ -84,7 +84,7 @@ How Create Recaptcha Google for Login website
             }
 
             // validate the response from Google reCaptcha
-            
+
             var captChaesponse = JsonConvert.DeserializeObject<ReCaptcha>(result);
 
             if (!captChaesponse.Success)
@@ -131,3 +131,4 @@ How Create Recaptcha Google for Login website
 ##### [Sourc:document 📃 Google recaptcha](developers.google.com/recaptcha/docs/display)
 
 
+## [آموزش Google reCaptcha در Asp.net Core](https://www.asancode.com/c/97e2)
