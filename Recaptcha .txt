@@ -1,0 +1,128 @@
+ادرس Api Recaptcha
+https://www.google.com/recaptcha/admin/create#list
+
+*****************************************
+:اسکریپت ری کپچا        
+    <!--CAptcha-->
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+    <!--CAptcha-->
+
+
+*****************************************
+     sitekey=
+
+    secretKey=
+
+*****************************************
+//  کدهای ویو لاگین
+  <div class="col-lg-12 mb-0">
+
+                                    <div class="d-grid">
+                                        <div class="g-recaptcha" data-sitekey="6LeMLYUdAAAAADXMfeCBP25nCxLz2X17c_bg0Wnk"></div>
+                                        <p class="text-danger">@ViewBag.Message</p>
+                                    </div>
+
+  </div>
+
+******************************************
+کدهای کنترلر لاگین
+ [HttpPost]
+        [Route("Login")]
+        public ActionResult Login(LoginViewModel login, IFormCollection form, string ReturnUrl = "/")
+        {
+            #region CaptchCode
+            string urlToPost = "https://www.google.com/recaptcha/api/siteverify";
+            string secretKey = "6LeMLYUdAAAAAM0lP2-NZ7y2GJaUFleZRMnYoEEd"; // change this
+            string gRecaptchaResponse = form["g-recaptcha-response"];
+
+            var postData = "secret=" + secretKey + "&response=" + gRecaptchaResponse;
+
+            // send post data
+            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(urlToPost);
+            request.Method = "POST";
+            request.ContentLength = postData.Length;
+            request.ContentType = "application/x-www-form-urlencoded";
+
+            using (var streamWriter = new StreamWriter(request.GetRequestStream()))
+            {
+                streamWriter.Write(postData);
+            }
+
+            // receive the response now
+            string result = string.Empty;
+            using (HttpWebResponse response = (HttpWebResponse)request.GetResponse())
+            {
+                using (var reader = new StreamReader(response.GetResponseStream()))
+                {
+                    result = reader.ReadToEnd();
+                }
+            }
+            // validate the response from Google reCaptcha
+
+            var captChaesponse = JsonConvert.DeserializeObject<ReCaptcha>(result);
+
+            if (!captChaesponse.Success)
+            {
+                ViewBag.Message = "Sorry, please validate the reCAPTCHA";
+                return View();
+            }
+            // go ahead and write code to validate username password against database
+
+
+            #endregion
+
+            if (!ModelState.IsValid)
+            {
+                return View(login);
+            }
+
+            var user = _userService.LoginUser(login);
+
+            if (user != null)
+            {
+                if (user.IsActive)
+                {
+                    var claims = new List<Claim>()
+                    {
+                        new Claim(ClaimTypes.NameIdentifier,user.UserId.ToString()),
+                        new Claim(ClaimTypes.Name,user.UserName)
+                    };
+                    var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+                    var principal = new ClaimsPrincipal(identity);
+
+                    var properties = new AuthenticationProperties
+                    {
+                        IsPersistent = login.RememberMe
+                    };
+                    HttpContext.SignInAsync(principal, properties);
+
+                   
+            return View(login);
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
