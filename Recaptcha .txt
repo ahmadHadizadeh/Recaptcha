@@ -18,7 +18,7 @@ https://www.google.com/recaptcha/admin/create#list
   <div class="col-lg-12 mb-0">
 
                                     <div class="d-grid">
-                                        <div class="g-recaptcha" data-sitekey="6LeMLYUdAAAAADXMfeCBP25nCxLz2X17c_bg0Wnk"></div>
+                                        <div class="g-recaptcha" data-sitekey="6LeMLYUdAAAAADXM25nCxLz2X17c_bg0Wnk"></div>
                                         <p class="text-danger">@ViewBag.Message</p>
                                     </div>
 
