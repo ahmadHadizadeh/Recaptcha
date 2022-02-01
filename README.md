@@ -1,31 +1,22 @@
 How Create Recaptcha Google for Login website
 
 نحوه ساخت google Recaptcha در قسمت login website
-
 ============
 ##### 1-وارد اکانت خود در گوگل می شویم
 
-============
-##### 2--وارد قسمت گوگل ریکپچا میشویم: https://google.com/recaptcha/admin/create 
 
-============
+##### 2-وارد قسمت گوگل ریکپچا میشویم: https://google.com/recaptcha/admin/create 
 ##### 3-   SiteKey , SecretKey   تکمیل فرایند ساخت ریکپچا در سایت گوگل  با پر کردن فیلد های  مربوطه برای گرفتن
 
-============
 
 #####  4-ابتدا کتابخانه NewtonSoft.json را در Nuget به پروژه خود اضافه میکینیم
 
-============
 
 ##### 5-اضافه کردن اسکریپت های گوگل ریکپچا به پروژه
-  <!--Captcha -->
- <script src="https://www.google.com/recaptcha/api.js" async defer></script>
-    <!--Captcha -->
 
-============
+ - <scriptsrc="https://www.google.com/recaptcha/api.js" async defer></script> 
 
 ##### 6- اضافه کردن  تصویر ریکپجا به ویو لاگین پروژه و دادن   sitkey در ویو
- <!--Recaptcha-->
 
                                 <div class="row">
                                         <div class="col-lg-12  col-md-10">
@@ -37,14 +28,12 @@ How Create Recaptcha Google for Login website
                                             </div>
                                         </div>
                                     </div>
- <!--Recaptcha-->
-============
+
 
 ##### 7- اضافه کردن یک کلاس جدید به پروژه
+        public class ReCaptchaResponse
+        {
 
-
- public  class ReCaptchaResponse
-    {
         [JsonProperty("success")]
         public bool Success { get; set; }
 
@@ -56,10 +45,8 @@ How Create Recaptcha Google for Login website
 
         [JsonProperty("error-codes")]
         public List<string> ErrorCodes { get; set; }
-    }
+        }
 
-
-============
 
 ##### کدهای کنترلر لاگین - LoginCode
 
@@ -95,8 +82,9 @@ How Create Recaptcha Google for Login website
                     result = reader.ReadToEnd();
                 }
             }
-            // validate the response from Google reCaptcha
 
+            // validate the response from Google reCaptcha
+            
             var captChaesponse = JsonConvert.DeserializeObject<ReCaptcha>(result);
 
             if (!captChaesponse.Success)
@@ -105,8 +93,6 @@ How Create Recaptcha Google for Login website
                 return View();
             }
             // go ahead and write code to validate username password against database
-
-
             #endregion
 
             if (!ModelState.IsValid)
@@ -115,7 +101,6 @@ How Create Recaptcha Google for Login website
             }
 
             var user = _userService.LoginUser(login);
-
             if (user != null)
             {
                 if (user.IsActive)
@@ -138,18 +123,11 @@ How Create Recaptcha Google for Login website
             return View(login);
         }
 
+##### [ نحوه ساخت google Recaptcha در قسمت login website](https://www.asancode.com/c97e2)
+##### 
 
-============
-
-
-##### آموزش تصویری
-
-##### visual learning
-
-#### [نحوه ساخت google Recaptcha در قسمت login website](https://www.asancode.com/c97e2)
 #### [How Create Recaptcha Google for Login website](https://www.asancode.com/c/97e2)
 
-============
-###### Sourc:document 📃 Google recaptcha
+##### [Sourc:document 📃 Google recaptcha](developers.google.com/recaptcha/docs/display)
 
-###  developers.google.com/recaptcha/docs/display 
+
